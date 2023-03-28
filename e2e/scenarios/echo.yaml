@@ -1,0 +1,15 @@
+title: echo
+plugins:
+  echo: echo.so
+steps:
+- title: Echo
+  protocol: gRPC
+  request:
+    client: '{{plugins.echo.NewEchoServiceClient("localhost:8080")}}'
+    method: Echo
+    body:
+      message: hoge
+  expect:
+    code: 0
+    body:
+      message: "hoge"
