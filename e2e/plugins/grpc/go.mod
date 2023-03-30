@@ -1,4 +1,4 @@
-module plugins/echo
+module plugins/grpc
 
 go 1.20
 

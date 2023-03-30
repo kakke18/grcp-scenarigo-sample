@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/kakke18/grcp-scenarigo-sample/internal/dao"
 	"github.com/kakke18/grcp-scenarigo-sample/internal/service"
 	"github.com/kakke18/grcp-scenarigo-sample/pb"
 	"google.golang.org/grpc"
@@ -26,6 +27,7 @@ func main() {
 
 	server := grpc.NewServer()
 	pb.RegisterEchoServiceServer(server, service.NewEchoService())
+	pb.RegisterUserServiceServer(server, service.NewUserService(dao.NewUserDao()))
 
 	reflection.Register(server)
 

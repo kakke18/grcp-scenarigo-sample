@@ -1,15 +1,19 @@
-title: echo
+title: EchoService.Echo
 plugins:
-  echo: echo.so
+  grpc: grpc.so
+vars:
+  client: '{{plugins.grpc.NewEchoServiceClient("localhost:8080")}}'
 steps:
-- title: Echo
+- title: 正常系
+  vars:
+    message: "hoge"
   protocol: gRPC
   request:
-    client: '{{plugins.echo.NewEchoServiceClient("localhost:8080")}}'
+    client: '{{vars.client}}'
     method: Echo
     body:
-      message: hoge
+      message: '{{vars.message}}'
   expect:
     code: 0
     body:
-      message: "hoge"
+      message: '{{vars.message}}'
