@@ -28,7 +28,7 @@ make test
   - プラグインのビルドファイル（`.so`）を格納するディレクトリ
 - plugins
   - 自作したプラグインを格納するディレクトリ
-  - echo
+  - grpc
     - scenarigoから使えるように、gRPC Clientの生成関数を実装
     - pb
       - gPRC Clientの生成関数のために、`.proto`ファイルから生成される`.go`ファイルを格納する
@@ -40,15 +40,22 @@ make test
   - scenarigoの設定ファイル
 
 ### internal
-- service/echo_service.go
-  - アプリケーションのビジネスロジックを実装したファイル
+- dao
+  - データベースへのアクセスを実装するパッケージ
+  - 今回はDBを用意するのが面倒だったので、インメモリで実装している
+- model
+  - アプリケーションで扱うデータの構造体を定義するパッケージ
+- service
+  - アプリケーションのビジネスロジックを実装するパッケージ
 
 ### pb
 - `.proto`ファイルから生成される`.go`ファイルを格納するディレクトリ
 
 ### proto
 - echo/v1/echo.proto
-  - スキーマを定義するファイル
+  - EchoServiceの定義ファイル
+- user/v1/user.proto
+  - UserServiceの定義ファイル
 - buf.gen.yaml
   - [buf](https://github.com/bufbuild/buf)の設定ファイル。詳細は省略
 - buf.yaml

@@ -1,0 +1,192 @@
+title: UserService.GetUser
+plugins:
+  grpc: grpc.so
+vars:
+  client: '{{plugins.grpc.NewUserServiceClient("localhost:8080")}}'
+steps:
+- title: 正常系
+  vars:
+    id: '1'
+    name: 'Alice'
+    email: 'alice@example.com'
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: GetUser
+    body:
+      id: '{{vars.id}}'
+  expect:
+    code: 0
+    body:
+      id: '{{vars.id}}'
+      name: '{{vars.name}}'
+      email: '{{vars.email}}'
+- title: 準異常系（存在しないユーザー）
+  vars:
+    id: '100'
+    error_message: 'user not found'
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: GetUser
+    body:
+      id: '{{vars.id}}'
+  expect:
+    code: 5
+    status:
+      message: '{{vars.error_message}}'
+
+---
+title: UserService.ListUsers
+plugins:
+  grpc: grpc.so
+vars:
+  client: '{{plugins.grpc.NewUserServiceClient("localhost:8080")}}'
+steps:
+- title: 正常系
+  vars:
+    length: 5
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: ListUsers
+    body:
+      limit: 5
+      offset: 0
+  expect:
+    code: 0
+    body:
+      users: '{{assert.length(vars.length)}}'
+
+---
+title: UserService.CreateUser
+plugins:
+  grpc: grpc.so
+vars:
+  client: '{{plugins.grpc.NewUserServiceClient("localhost:8080")}}'
+steps:
+- title: 正常系
+  vars:
+    name: "test"
+    email: "test@email.com"
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: CreateUser
+    body:
+      name: '{{vars.name}}'
+      email: '{{vars.email}}'
+  expect:
+    code: 0
+    body:
+      id: '{{assert.notZero}}'
+- title: 準正常系（nameが空）
+  vars:
+    name: ""
+    email: "test@email.com"
+    error_message: 'invalid user'
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: CreateUser
+    body:
+      name: '{{vars.name}}'
+      email: '{{vars.email}}'
+  expect:
+    code: 3
+    status:
+      message: '{{vars.error_message}}'
+
+---
+title: UserService.UpdateUser
+plugins:
+  grpc: grpc.so
+vars:
+  client: '{{plugins.grpc.NewUserServiceClient("localhost:8080")}}'
+steps:
+- title: 正常系
+  vars:
+    id: "2"
+    name: "NewBob"
+    email: "new_bob@email.com"
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: UpdateUser
+    body:
+      id: '{{vars.id}}'
+      name: '{{vars.name}}'
+      email: '{{vars.email}}'
+  expect:
+    code: 0
+    body:
+      id: '{{vars.id}}'
+- title: 準正常系（nameが空）
+  vars:
+    id: "1"
+    name: ""
+    email: "new_test@email.com"
+    error_message: 'invalid name'
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: UpdateUser
+    body:
+      id: '{{vars.id}}'
+      name: '{{vars.name}}'
+      email: '{{vars.email}}'
+  expect:
+    code: 3
+    status:
+      message: '{{vars.error_message}}'
+- title: 準正常系（存在しないユーザー）
+  vars:
+    id: "100"
+    name: "new_test"
+    email: "new_test@email.com"
+    error_message: 'user not found'
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: UpdateUser
+    body:
+      id: '{{vars.id}}'
+      name: '{{vars.name}}'
+      email: '{{vars.email}}'
+  expect:
+    code: 5
+    status:
+      message: '{{vars.error_message}}'
+
+---
+title: UserService.DeleteUser
+plugins:
+  grpc: grpc.so
+vars:
+  client: '{{plugins.grpc.NewUserServiceClient("localhost:8080")}}'
+steps:
+- title: 正常系
+  vars:
+    id: "3"
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: DeleteUser
+    body:
+      id: '{{vars.id}}'
+  expect:
+    code: 0
+- title: 準正常系（存在しないユーザー）
+  vars:
+    id: "100"
+    error_message: 'user not found'
+  protocol: gRPC
+  request:
+    client: '{{vars.client}}'
+    method: DeleteUser
+    body:
+      id: '{{vars.id}}'
+  expect:
+    code: 5
+    status:
+      message: '{{vars.error_message}}'

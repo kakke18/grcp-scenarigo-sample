@@ -5,8 +5,8 @@ scenarios: # Specify test scenario files and directories.
 
 pluginDirectory: ./gen      # Specify the root directory of plugins.
 plugins:                  # Specify configurations to build plugins.
-  echo.so:
-    src: ./plugins/echo
+  grpc.so:
+    src: ./plugins/grpc
 
 output:
   verbose: false   # Enable verbose output.
