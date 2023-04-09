@@ -80,7 +80,7 @@ steps:
     code: 0
     body:
       id: '{{assert.notZero}}'
-- title: 準正常系（nameが空）
+- title: 準異常系（nameが空）
   vars:
     name: ""
     email: "test@email.com"
@@ -121,7 +121,7 @@ steps:
     code: 0
     body:
       id: '{{vars.id}}'
-- title: 準正常系（nameが空）
+- title: 準異常系（nameが空）
   vars:
     id: "1"
     name: ""
@@ -139,7 +139,7 @@ steps:
     code: 3
     status:
       message: '{{vars.error_message}}'
-- title: 準正常系（存在しないユーザー）
+- title: 準異常系（存在しないユーザー）
   vars:
     id: "100"
     name: "new_test"
@@ -176,7 +176,7 @@ steps:
       id: '{{vars.id}}'
   expect:
     code: 0
-- title: 準正常系（存在しないユーザー）
+- title: 準異常系（存在しないユーザー）
   vars:
     id: "100"
     error_message: 'user not found'
