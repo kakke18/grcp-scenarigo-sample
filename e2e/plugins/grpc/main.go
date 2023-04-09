@@ -7,9 +7,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var (
-	conn *grpc.ClientConn
-)
+var conn *grpc.ClientConn
 
 func newConn(target string) *grpc.ClientConn {
 	if conn != nil {

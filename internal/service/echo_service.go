@@ -6,9 +6,7 @@ import (
 	"github.com/kakke18/grcp-scenarigo-sample/pb"
 )
 
-var (
-	_ pb.EchoServiceServer = (*EchoService)(nil)
-)
+var _ pb.EchoServiceServer = (*EchoService)(nil)
 
 type EchoService struct {
 	pb.UnimplementedEchoServiceServer

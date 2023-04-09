@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+
 	"github.com/kakke18/grcp-scenarigo-sample/internal/model"
 	"github.com/kakke18/grcp-scenarigo-sample/pb"
 	"google.golang.org/grpc/codes"
@@ -11,9 +12,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-var (
-	_ pb.UserServiceServer = (*UserService)(nil)
-)
+var _ pb.UserServiceServer = (*UserService)(nil)
 
 type UserService struct {
 	pb.UnimplementedUserServiceServer
